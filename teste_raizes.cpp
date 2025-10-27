@@ -58,6 +58,43 @@ std::vector<double> bissection(std::vector<interval> intervals, float threshold)
     return roots;
 }
 
+std::vector<double> false_position(std::vector<interval> intervals, float threshold){
+    std::vector<double> roots;
+    for(const auto& t : intervals){
+        double curr_lower = t.lower; // current lower bound
+        double curr_upper = t.upper; // current upper bound
+        // trying to find with a 100 iterations
+        for(int i = 0; i < 100; i++){
+            // finding x_i
+            // (a(f(b)) - b(f(a)))/(f(b)-f(a))
+            double denominator = equation(curr_upper) - equation(curr_lower);
+            double xi = (curr_lower*(equation(curr_upper)) - curr_upper*(equation(curr_lower)))/denominator;
+            // evaluating the function on the interval bounds and xi 
+            double lower_value = equation(curr_lower);
+            double upper_value = equation(curr_upper);
+            double xi_value = equation(xi);
+            // looking for signal change
+            if(lower_value*xi_value < 0){
+                curr_upper = xi;
+            }
+            else if(xi_value*upper_value < 0){
+                curr_lower = xi;
+            }
+            else if(xi_value == 0) {
+                roots.push_back(xi);
+                break;
+            }
+            // interval size is lesser than the threshold
+            if(std::abs(curr_lower - curr_upper) < threshold){
+                double middle = (curr_upper+curr_lower)/2;
+                roots.push_back(middle);
+                break;
+            }
+        }
+    }
+    return roots;
+}
+
 int main(){
     std::vector<interval> intervals = find_root_intervals();
     
@@ -70,7 +107,7 @@ int main(){
         }
     }
 
-    std::vector<double> roots = bissection(intervals, 0.01);
+    std::vector<double> roots = false_position(intervals, 0.01);
 
     if(roots.empty()){
         printf("Nenhuma raíz encontrada.\n");
