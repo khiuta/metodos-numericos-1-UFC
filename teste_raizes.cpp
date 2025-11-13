@@ -16,6 +16,10 @@ double equation(double x){
     return x*x*x - 9*x + 3.0;
 }
 
+double derivative(double x){
+    return 3*(x*x) - 9;
+}
+
 int main(){
     // std::vector<interval> intervals = find_root_intervals(equation);
     
@@ -28,18 +32,18 @@ int main(){
     //     }
     // }
 
-    // std::vector<double> roots = new_raph(0.0001, 0.5, oscilation_equation, oscilation_derivative);
+    std::vector<double> roots = new_raph(0.0001, 0.5, equation, derivative);
 
-    // if(roots.empty()){
-    //     printf("Nenhuma raíz encontrada.\n");
-    // } else {
-    //     printf("Encontrado %zu raízes: \n", roots.size());
-    //     for(const auto& r : roots){
-    //         printf("Raiz: %f\n", r);
-    //     }
-    // }
+    if(roots.empty()){
+        printf("Nenhuma raíz encontrada.\n");
+    } else {
+        printf("Encontrado %zu raízes: \n", roots.size());
+        for(const auto& r : roots){
+            printf("Raiz: %f\n", r);
+        }
+    }
 
-    printf("%.15f\n", power(4, 0.23));
+    //printf("%.15f\n", power(4, 0.23));
     
     return 0;
 }

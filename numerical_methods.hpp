@@ -186,7 +186,7 @@ std::vector<double> new_raph(float threshold, double x0, std::function<double(do
         return roots;
     }
     for(int i = 0; i < 100; i++){
-        int x1 = x0 - equation(x0)/derivative(x0);
+        double x1 = x0 - equation(x0)/derivative(x0);
         if(absol(equation(x1)) < threshold || absol(x1-x0) < threshold){
             roots.push_back(x1);
             break;
